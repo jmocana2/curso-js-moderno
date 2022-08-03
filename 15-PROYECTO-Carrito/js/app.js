@@ -9,5 +9,7 @@ function cargarEventListeners() {
 }
 
 function agregarCurso(e) {
-  console.log('Añadiendo curso');
+  if (e.target.classList.contains('agregar-carrito')) {
+    console.log('Añadiendo curso', e.target.classList);
+  }
 }
