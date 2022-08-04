@@ -7,6 +7,7 @@ let articulosCarrito = [];
 cargarEventListeners();
 function cargarEventListeners() {
   listaCursos.addEventListener('click', agregarCurso);
+  carrito.addEventListener('click', eliminarCurso);
 }
 
 // Agrega un nuevo curso al carrito
@@ -19,6 +20,16 @@ function agregarCurso(e) {
   }
 }
 
+// Elimina un curso del carrito
+function eliminarCurso(e) {
+  if (e.target.classList.contains('borrar-curso')) {
+    id = e.target.getAttribute('data-id');
+    articulosCarrito = articulosCarrito.filter(curso => curso.id !== id);
+  }
+  console.log(articulosCarrito);
+  carritoHTML();
+}
+
 //Obtener datos del curso
 function obtenerDatosCurso(curso) {
   const datosCurso = {
@@ -29,7 +40,25 @@ function obtenerDatosCurso(curso) {
     cantidad: 1
   };
 
-  articulosCarrito = [...articulosCarrito, datosCurso];
+  //Comprobamos si ya se añadio el curso
+  const existe = articulosCarrito.some(curso => {
+    return curso.id === datosCurso.id;
+  });
+
+  if (existe) {
+    // Aumentamos cantidad del curso
+    const nuevoCarrito = articulosCarrito.map(curso => {
+      if (curso.id === datosCurso.id) {
+        curso.cantidad++;
+        return curso;
+      } else {
+        return curso;
+      }
+    });
+  } else {
+    // Añadimos al carrito
+    articulosCarrito = [...articulosCarrito, datosCurso];
+  }
 
   carritoHTML();
 }
@@ -39,9 +68,14 @@ function carritoHTML() {
   limpiarHTML();
 
   articulosCarrito.forEach(curso => {
+    const { id, titulo, imagen, precio, cantidad } = curso;
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td>${curso.titulo}</td>
+      <td><img src="${imagen}" alt="imagen del curso" width="100" /></td>
+      <td>${titulo}</td>
+      <td>${precio}</td>
+      <td>${cantidad}</td>
+      <td><a href="#" data-id="${id}" class="borrar-curso">X</a></td>
     `;
     contenedorCarrito.appendChild(row);
     console.log('Añadiendo curso', curso);
