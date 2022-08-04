@@ -8,6 +8,10 @@ cargarEventListeners();
 function cargarEventListeners() {
   listaCursos.addEventListener('click', agregarCurso);
   carrito.addEventListener('click', eliminarCurso);
+  vaciarCarritoBtn.addEventListener('click', () => {
+    articulosCarrito = [];
+    limpiarHTML();
+  });
 }
 
 // Agrega un nuevo curso al carrito
