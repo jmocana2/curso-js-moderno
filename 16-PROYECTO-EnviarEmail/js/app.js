@@ -1,4 +1,5 @@
 // variables
+const formulario = document.querySelector('#enviar-mail');
 const btnEnviar = document.querySelector('#enviar');
 const email = document.querySelector('#email');
 const asunto = document.querySelector('#asunto');
@@ -26,7 +27,26 @@ function validarFormulario(e) {
   if (e.target.value.length > 0) {
     //hay datos
   } else {
-    console.log(e.target);
+    //No hay datos
     e.target.classList.add('border-2', 'border-red-500');
+    const errores = document.querySelectorAll('.error');
+    if (errores.length === 0) {
+      mostrarError();
+    }
   }
+}
+
+// muestra error
+function mostrarError() {
+  const mensajeError = document.createElement('p');
+  mensajeError.textContent = 'El campo no puede estar vacío';
+  formulario.appendChild(mensajeError);
+  mensajeError.classList.add(
+    'border-2',
+    'border-red-500',
+    'p-5',
+    'mt-5',
+    'text-red-500',
+    'error'
+  );
 }
