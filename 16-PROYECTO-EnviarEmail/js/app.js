@@ -1,6 +1,7 @@
 // variables
 const formulario = document.querySelector('#enviar-mail');
 const btnEnviar = document.querySelector('#enviar');
+const btnReset = document.querySelector('#resetBtn');
 const email = document.querySelector('#email');
 const asunto = document.querySelector('#asunto');
 const mensaje = document.querySelector('#mensaje');
@@ -17,6 +18,8 @@ function eventListeners() {
   email.addEventListener('blur', validarFormulario);
   asunto.addEventListener('blur', validarFormulario);
   mensaje.addEventListener('blur', validarFormulario);
+  btnReset.addEventListener('click', resetFormulario);
+  formulario.addEventListener('submit', enviarFormulario);
 }
 
 // funciones
@@ -46,7 +49,7 @@ function validarFormulario(e) {
   if (e.target.type === 'email') {
     if (erMail.test(e.target.value)) {
       const error = document.querySelector('p.error');
-      error.remove();
+      error && error.remove();
       campoValido(e);
     } else {
       campoInvalido(e);
@@ -59,7 +62,7 @@ function validarFormulario(e) {
     btnEnviar.disabled = false;
     btnEnviar.classList.remove('cursor-not-allowed', 'opacity-50');
     const error = document.querySelector('p.error');
-    error.remove();
+    error && error.remove();
   } else {
     btnEnviar.disabled = true;
     btnEnviar.classList.add('cursor-not-allowed', 'opacity-50');
@@ -91,4 +94,37 @@ function mostrarError(mensaje) {
     'text-red-500',
     'error'
   );
+}
+
+// Enviar formulario
+function enviarFormulario(e) {
+  e.preventDefault();
+  const spinner = document.querySelector('#spinner');
+  spinner.style.display = 'flex';
+
+  setTimeout(() => {
+    spinner.style.display = 'none';
+    const msjEnviado = document.createElement('p');
+    msjEnviado.textContent = 'Formulario enviado correctamente';
+    msjEnviado.classList.add(
+      'p-3',
+      'text-white',
+      'uppercase',
+      'font-bold',
+      'bg-green-500',
+      'mb-5'
+    );
+    formulario.insertBefore(msjEnviado, spinner);
+
+    setTimeout(() => {
+      msjEnviado.remove();
+      resetFormulario();
+    }, 3000);
+  }, 3000);
+}
+
+// Resetea el formulario
+function resetFormulario() {
+  formulario.reset();
+  iniciarApp();
 }
