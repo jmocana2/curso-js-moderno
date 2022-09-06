@@ -5,6 +5,11 @@ const email = document.querySelector('#email');
 const asunto = document.querySelector('#asunto');
 const mensaje = document.querySelector('#mensaje');
 
+// Expresiones regulares
+// valida un email
+const erMail =
+  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
 // eventos
 eventListeners();
 function eventListeners() {
@@ -39,8 +44,6 @@ function validarFormulario(e) {
 
   //valida si el email es incorrecto
   if (e.target.type === 'email') {
-    erMail =
-      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     if (erMail.test(e.target.value)) {
       const error = document.querySelector('p.error');
       error.remove();
@@ -49,6 +52,17 @@ function validarFormulario(e) {
       campoInvalido(e);
       mostrarError('Email incorrecto');
     }
+  }
+
+  //si pasamos validación activamos botón enviar
+  if (erMail.test(email.value) && asunto.value !== '' && mensaje.value !== '') {
+    btnEnviar.disabled = false;
+    btnEnviar.classList.remove('cursor-not-allowed', 'opacity-50');
+    const error = document.querySelector('p.error');
+    error.remove();
+  } else {
+    btnEnviar.disabled = true;
+    btnEnviar.classList.add('cursor-not-allowed', 'opacity-50');
   }
 }
 
