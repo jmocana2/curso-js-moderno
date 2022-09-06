@@ -24,22 +24,50 @@ function iniciarApp() {
 
 // valida el formulario
 function validarFormulario(e) {
+  //valida si un campo está vacío
   if (e.target.value.length > 0) {
     //hay datos
+    campoValido(e);
   } else {
     //No hay datos
-    e.target.classList.add('border-2', 'border-red-500');
+    campoInvalido(e);
     const errores = document.querySelectorAll('.error');
     if (errores.length === 0) {
-      mostrarError();
+      mostrarError('El campo no puede estar vacío');
+    }
+  }
+
+  //valida si el email es incorrecto
+  if (e.target.type === 'email') {
+    erMail =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    if (erMail.test(e.target.value)) {
+      const error = document.querySelector('p.error');
+      error.remove();
+      campoValido(e);
+    } else {
+      campoInvalido(e);
+      mostrarError('Email incorrecto');
     }
   }
 }
 
+// campo valido
+function campoValido(e) {
+  e.target.classList.remove('border-red-500');
+  e.target.classList.add('border-2', 'border-green-500');
+}
+
+// campo invalido
+function campoInvalido(e) {
+  e.target.classList.remove('border-green-500');
+  e.target.classList.add('border-2', 'border-red-500');
+}
+
 // muestra error
-function mostrarError() {
+function mostrarError(mensaje) {
   const mensajeError = document.createElement('p');
-  mensajeError.textContent = 'El campo no puede estar vacío';
+  mensajeError.textContent = mensaje;
   formulario.appendChild(mensajeError);
   mensajeError.classList.add(
     'border-2',
