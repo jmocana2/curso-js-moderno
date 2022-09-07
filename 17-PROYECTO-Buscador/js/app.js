@@ -51,14 +51,18 @@ maximo.addEventListener('change', e => {
 });
 color.addEventListener('change', e => {
   busqueda.color = e.target.value;
+
+  filtrarAuto();
 });
 puertas.addEventListener('change', e => {
-  busqueda.puertas = e.target.value;
+  busqueda.puertas = parseInt(e.target.value);
+
+  filtrarAuto();
 });
 transmision.addEventListener('change', e => {
   busqueda.transmision = e.target.value;
 
-  console.log(busqueda);
+  filtrarAuto();
 });
 
 // FUNCIONES
@@ -96,7 +100,10 @@ function filtrarAuto() {
     .filter(filtrarMarca)
     .filter(filtrarYear)
     .filter(filtrarMinimo)
-    .filter(filtrarMaximo);
+    .filter(filtrarMaximo)
+    .filter(filtrarPuertas)
+    .filter(filtrarColor)
+    .filter(filtrarTransmision);
   mostrarResultado(resultado);
 }
 
@@ -132,6 +139,33 @@ function filtrarMaximo(auto) {
   const { maximo } = busqueda;
   if (maximo) {
     return auto.precio <= maximo;
+  }
+  return auto;
+}
+
+// Filtrar por puertas
+function filtrarPuertas(auto) {
+  const { puertas } = busqueda;
+  if (puertas) {
+    return auto.puertas === puertas;
+  }
+  return auto;
+}
+
+// Filtrar por color
+function filtrarColor(auto) {
+  const { color } = busqueda;
+  if (color) {
+    return auto.color === color;
+  }
+  return auto;
+}
+
+// Filtrar por transmisión
+function filtrarTransmision(auto) {
+  const { transmision } = busqueda;
+  if (transmision) {
+    return auto.transmision === transmision;
   }
   return auto;
 }
