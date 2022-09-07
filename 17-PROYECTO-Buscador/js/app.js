@@ -41,9 +41,13 @@ marca.addEventListener('change', e => {
 });
 minimo.addEventListener('change', e => {
   busqueda.minimo = e.target.value;
+
+  filtrarAuto();
 });
 maximo.addEventListener('change', e => {
   busqueda.maximo = e.target.value;
+
+  filtrarAuto();
 });
 color.addEventListener('change', e => {
   busqueda.color = e.target.value;
@@ -88,7 +92,11 @@ function llenarYears() {
 
 // Filtros de busqueda
 function filtrarAuto() {
-  const resultado = autos.filter(filtrarMarca).filter(filtrarYear);
+  const resultado = autos
+    .filter(filtrarMarca)
+    .filter(filtrarYear)
+    .filter(filtrarMinimo)
+    .filter(filtrarMaximo);
   mostrarResultado(resultado);
 }
 
@@ -106,6 +114,24 @@ function filtrarYear(auto) {
   const { year } = busqueda;
   if (year) {
     return auto.year === year;
+  }
+  return auto;
+}
+
+// Filtrar por precio minimo
+function filtrarMinimo(auto) {
+  const { minimo } = busqueda;
+  if (minimo) {
+    return auto.precio >= minimo;
+  }
+  return auto;
+}
+
+// Filtrar por precio máximo
+function filtrarMaximo(auto) {
+  const { maximo } = busqueda;
+  if (maximo) {
+    return auto.precio <= maximo;
   }
   return auto;
 }
