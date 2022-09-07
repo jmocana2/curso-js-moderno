@@ -34,6 +34,8 @@ year.addEventListener('change', e => {
 });
 marca.addEventListener('change', e => {
   busqueda.marca = e.target.value;
+
+  filtrarAuto();
 });
 minimo.addEventListener('change', e => {
   busqueda.minimo = e.target.value;
@@ -78,4 +80,19 @@ function llenarYears() {
     opcion.textContent = i;
     year.appendChild(opcion);
   }
+}
+
+// Filtros de busqueda
+function filtrarAuto() {
+  const resultado = autos.filter(filtrarMarca);
+  console.log(resultado);
+}
+
+// Filtrar por marca
+function filtrarMarca(auto) {
+  const { marca } = busqueda;
+  if (marca) {
+    return auto.marca === marca;
+  }
+  return auto;
 }
