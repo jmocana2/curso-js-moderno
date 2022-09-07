@@ -104,7 +104,22 @@ function filtrarAuto() {
     .filter(filtrarPuertas)
     .filter(filtrarColor)
     .filter(filtrarTransmision);
-  mostrarResultado(resultado);
+
+  if (resultado.length > 0) {
+    mostrarResultado(resultado);
+  } else {
+    noResultados();
+  }
+}
+
+// No hay resultados
+function noResultados() {
+  limpiarHTML();
+  const noResultados = document.createElement('p');
+  noResultados.classList.add('alerta', 'error');
+  noResultados.textContent =
+    'No se encontraron resultados. Prueba con otros terminos de busqueda';
+  resultado.appendChild(noResultados);
 }
 
 // Filtrar por marca
