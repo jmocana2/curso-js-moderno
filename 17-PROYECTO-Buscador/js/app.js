@@ -30,7 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //Eventos de combos
 year.addEventListener('change', e => {
-  busqueda.year = e.target.value;
+  busqueda.year = parseInt(e.target.value);
+
+  filtrarAuto();
 });
 marca.addEventListener('change', e => {
   busqueda.marca = e.target.value;
@@ -84,7 +86,7 @@ function llenarYears() {
 
 // Filtros de busqueda
 function filtrarAuto() {
-  const resultado = autos.filter(filtrarMarca);
+  const resultado = autos.filter(filtrarMarca).filter(filtrarYear);
   console.log(resultado);
 }
 
@@ -93,6 +95,15 @@ function filtrarMarca(auto) {
   const { marca } = busqueda;
   if (marca) {
     return auto.marca === marca;
+  }
+  return auto;
+}
+
+// Filtrar por año
+function filtrarYear(auto) {
+  const { year } = busqueda;
+  if (year) {
+    return auto.year === year;
   }
   return auto;
 }
