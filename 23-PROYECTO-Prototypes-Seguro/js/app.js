@@ -4,13 +4,47 @@ const resultado = document.querySelector('#resultado');
 
 // CONSTRUCTORES
 // Seguro
-const Seguro = function (marca, anyo, tipo) {
+const Seguro = function (marca, year, tipo) {
   this.marca = marca;
-  this.anyo = anyo;
+  this.year = year;
   this.tipo = tipo;
 };
 
-// ui
+// Calcula la cotización del seguro
+Seguro.prototype.cotizarSeguro = function () {
+  let cantidad;
+  const base = 2000;
+
+  // Incremento por marca
+  switch (this.marca) {
+    case '1':
+      cantidad = base * 1.15;
+      break;
+    case '2':
+      cantidad = base * 1.05;
+      break;
+    case '3':
+      cantidad = base * 1.35;
+      break;
+    default:
+      break;
+  }
+
+  // Decremento por año
+  const diferencia = new Date().getFullYear() - this.year;
+  cantidad -= (diferencia * 3 * cantidad) / 100;
+
+  // Incremento por tipo
+  if (this.tipo === 'basico') {
+    cantidad *= 1.3;
+  } else {
+    cantidad *= 1.5;
+  }
+
+  return cantidad;
+};
+
+// UI
 const UI = function () {};
 
 // Rellena el select de añños
@@ -48,7 +82,6 @@ UI.prototype.alerta = (mensaje, tipo) => {
   }, 3000);
 };
 
-// INSTANCIAS
 const ui = new UI();
 
 // EVENTOS
@@ -76,4 +109,7 @@ function validarFormulario(e) {
   }
 
   ui.alerta('cotizando...', 'exito');
+
+  const seguro = new Seguro(marca, year, tipo);
+  console.log('cantidad: ', seguro.cotizarSeguro());
 }
