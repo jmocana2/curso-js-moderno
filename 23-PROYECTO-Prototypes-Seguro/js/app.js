@@ -1,5 +1,6 @@
 // DOM
 const formulario = document.querySelector('#cotizar-seguro');
+const resultado = document.querySelector('#resultado');
 
 // CONSTRUCTORES
 // Seguro
@@ -12,6 +13,7 @@ const Seguro = function (marca, anyo, tipo) {
 // ui
 const UI = function () {};
 
+// Rellena el select de añños
 UI.prototype.rellenarAnyos = () => {
   const fecha = new Date();
   const max = fecha.getFullYear(),
@@ -25,6 +27,25 @@ UI.prototype.rellenarAnyos = () => {
     option.textContent = i;
     year.appendChild(option);
   }
+};
+
+// Muestra las alertas
+UI.prototype.alerta = (mensaje, tipo) => {
+  const div = document.createElement('div');
+  div.textContent = mensaje;
+
+  if (tipo === 'error') {
+    div.classList.add('error');
+  } else {
+    div.classList.add('correcto');
+  }
+  div.classList.add('mensaje', 'mt-10');
+
+  formulario.insertBefore(div, resultado);
+
+  setTimeout(() => {
+    div.remove();
+  }, 3000);
 };
 
 // INSTANCIAS
@@ -50,8 +71,9 @@ function validarFormulario(e) {
   const tipo = document.querySelector('input[name=tipo]:checked').value;
 
   if (marca === '' || year === '' || tipo === '') {
-    console.log('KO!');
-  } else {
-    console.log('OK!');
+    ui.alerta('Todos los campos son obligatorios', 'error');
+    return;
   }
+
+  ui.alerta('cotizando...', 'exito');
 }
