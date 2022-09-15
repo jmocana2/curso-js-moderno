@@ -1,3 +1,6 @@
+// DOM
+const formulario = document.querySelector('#cotizar-seguro');
+
 // CONSTRUCTORES
 // Seguro
 const Seguro = function (marca, anyo, tipo) {
@@ -31,3 +34,24 @@ const ui = new UI();
 document.addEventListener('DOMContentLoaded', () => {
   ui.rellenarAnyos();
 });
+
+eventListener();
+function eventListener() {
+  formulario.addEventListener('submit', validarFormulario);
+}
+
+// FUNCIONES
+// Validacion del formulario
+function validarFormulario(e) {
+  e.preventDefault();
+
+  const marca = document.querySelector('#marca').value;
+  const year = document.querySelector('#year').value;
+  const tipo = document.querySelector('input[name=tipo]:checked').value;
+
+  if (marca === '' || year === '' || tipo === '') {
+    console.log('KO!');
+  } else {
+    console.log('OK!');
+  }
+}
