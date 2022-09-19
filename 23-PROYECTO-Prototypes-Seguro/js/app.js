@@ -1,6 +1,7 @@
 // DOM
 const formulario = document.querySelector('#cotizar-seguro');
 const resultado = document.querySelector('#resultado');
+const spinner = document.querySelector('#cargando');
 
 // CONSTRUCTORES
 // Seguro
@@ -47,7 +48,7 @@ Seguro.prototype.cotizarSeguro = function () {
 // UI
 const UI = function () {};
 
-// Rellena el select de añños
+// Rellena el select de años
 UI.prototype.rellenarAnyos = () => {
   const fecha = new Date();
   const max = fecha.getFullYear(),
@@ -82,6 +83,44 @@ UI.prototype.alerta = (mensaje, tipo) => {
   }, 3000);
 };
 
+// Muestra el resultado final
+UI.prototype.mostrarResultado = (total, seguro) => {
+  const { marca, year, tipo } = seguro;
+  let txtMarca;
+  const resultadoDiv = document.querySelector('#resultado div');
+
+  resultadoDiv && resultadoDiv.remove();
+
+  spinner.style.display = 'block';
+
+  switch (marca) {
+    case '1':
+      txtMarca = 'Americano';
+      break;
+    case '2':
+      txtMarca = 'Asiático';
+      break;
+    case '3':
+      txtMarca = 'Europeo';
+      break;
+    default:
+      break;
+  }
+
+  const resumen = document.createElement('div');
+  resumen.innerHTML = `<p class='header'>Resumen</p>
+                       <p class='font-bold'>Total: <span class='font-normal'>${total}</span></p>
+                       <p class='font-bold'>Marca: <span class='font-normal'>${txtMarca}</span></p>
+                       <p class='font-bold'>Año: <span class='font-normal'>${year}</span></p>
+                       <p class='font-bold'>Tipo: <span class='font-normal'>${tipo}</span></p>`;
+  resumen.classList.add('mt-10');
+
+  setTimeout(() => {
+    spinner.style.display = 'none';
+    resultado.appendChild(resumen);
+  }, 3000);
+};
+
 const ui = new UI();
 
 // EVENTOS
@@ -111,5 +150,7 @@ function validarFormulario(e) {
   ui.alerta('cotizando...', 'exito');
 
   const seguro = new Seguro(marca, year, tipo);
-  console.log('cantidad: ', seguro.cotizarSeguro());
+  const total = seguro.cotizarSeguro();
+
+  ui.mostrarResultado(total, seguro);
 }
